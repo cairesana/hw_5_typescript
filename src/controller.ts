@@ -3,6 +3,7 @@
 import {Get, JsonController, Post, HttpCode, BodyParam, NotFoundError, Put, Param, Body} from 'routing-controllers'
 import Game from './entity';
 import defaultBoard from './entity';
+import { Validator } from 'class-validator';
 
 
 const onlyThoseColors = ['red', 'blue', 'green', 'yellow', 'magenta']
@@ -44,10 +45,16 @@ export default class GameController {
       const game = await Game.findOne(id)
       if (!game) throw new NotFoundError('This game doesn\'t exists') // if the game does not exist, throw an error
 
+      const validator = new Validator();
+      
+      if(validator.isNotIn(update.color, onlyThoseColors)) throw new NotFoundError('Buuh! I don\'t like this color. Please, select only between red, blue, green, yellow or magenta')
+
       return Game.merge(game, update).save() 
+      
       // merge: if the game exists, overwrite the properties that are updated
       // save: save the updated game. 
       // tested: http put :4000/games/1 name="again2" color="blue" -- first without color validation. 
+      // also tested: http put :4000/games/6 = 404 - does not exists =) 
     }
 
   }
@@ -56,7 +63,14 @@ export default class GameController {
 // make sure (validate) that the color is one of these colors: red, blue, green, yellow, magenta
 
 
+// docs: 
+//import {Validator} from "class-validator";
 
+// // Validation methods
+// const validator = new Validator();
+
+// validator.isIn(value, possibleValues); // Checks if given value is in a array of allowed values.
+// validator.isNotIn(value, possibleValues); // Checks if given value not in a array of allowed values.
 
  
       

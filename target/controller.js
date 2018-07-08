@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const routing_controllers_1 = require("routing-controllers");
 const entity_1 = require("./entity");
 const entity_2 = require("./entity");
+const class_validator_1 = require("class-validator");
 const onlyThoseColors = ['red', 'blue', 'green', 'yellow', 'magenta'];
 let GameController = class GameController {
     async allGames() {
@@ -33,6 +34,9 @@ let GameController = class GameController {
         const game = await entity_1.default.findOne(id);
         if (!game)
             throw new routing_controllers_1.NotFoundError('This game doesn\'t exists');
+        const validator = new class_validator_1.Validator();
+        if (validator.isNotIn(update.color, onlyThoseColors))
+            throw new routing_controllers_1.NotFoundError('Buuh! I don\'t like this color. Please, select only between red, blue, green, yellow or magenta');
         return entity_1.default.merge(game, update).save();
     }
 };
