@@ -13,7 +13,7 @@ export default class GameController {
    // create a `GET /games` endpoint that returns all the games (with envelope!)
     @Get('/games')
     async allGames() {
-      const games = await Game.find()   // .find() is used to get all rows
+      const games = await Game.find()   
       return { games }
     }
 
