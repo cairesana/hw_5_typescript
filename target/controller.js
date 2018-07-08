@@ -29,6 +29,12 @@ let GameController = class GameController {
         newGame.board = entity_2.default;
         return newGame.save();
     }
+    async updateGame(id, update) {
+        const game = await entity_1.default.findOne(id);
+        if (!game)
+            throw new routing_controllers_1.NotFoundError('This game doesn\'t exists');
+        return entity_1.default.merge(game, update).save();
+    }
 };
 __decorate([
     routing_controllers_1.Get('/games'),
@@ -44,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "createGame", null);
+__decorate([
+    routing_controllers_1.Put('/games/:id'),
+    __param(0, routing_controllers_1.Param('id')),
+    __param(1, routing_controllers_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], GameController.prototype, "updateGame", null);
 GameController = __decorate([
     routing_controllers_1.JsonController()
 ], GameController);
