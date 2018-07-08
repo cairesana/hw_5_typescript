@@ -11,6 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const BaseEntity_1 = require("typeorm/repository/BaseEntity");
+const defaultBoard = [
+    ['o', 'o', 'o'],
+    ['o', 'o', 'o'],
+    ['o', 'o', 'o']
+];
 let Game = class Game extends BaseEntity_1.BaseEntity {
 };
 __decorate([
@@ -26,7 +31,7 @@ __decorate([
     __metadata("design:type", String)
 ], Game.prototype, "color", void 0);
 __decorate([
-    typeorm_1.Column('json', { nullable: false }),
+    typeorm_1.Column('json', { nullable: false, default: defaultBoard }),
     __metadata("design:type", Object)
 ], Game.prototype, "board", void 0);
 Game = __decorate([
